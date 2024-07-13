@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
-import 'project1/main.dart' as project1;
-import 'project2/main.dart' as project2;
-import 'project3/main.dart' as project3;
+import 'package:flutter_application_2/testing_app/main.dart' as testing_app;
+import 'package:flutter_application_2/infinite_list/main.dart' as infinite_list;
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Main Project',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      home: MyHomePage(),
-      routes: {
-        '/project1': (context) => project1.MyApp(),
-        '/project2': (context) => project2.MyApp(),
-        '/project3': (context) => project3.MyApp(),
-      },
+      home: const HomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Main Project'),
+        title: const Text('Flutter Demo Home Page'),
       ),
       body: Center(
         child: Column(
@@ -38,22 +37,23 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/project1');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const testing_app.TestingApp()),
+                );
               },
-              child: Text('Open Project 1'),
+              child: const Text('Go to Testing App'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/project2');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const infinite_list.MyApp()),
+                );
               },
-              child: Text('Open Project 2'),
+              child: const Text('Go to Infinite List App'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/project3');
-              },
-              child: Text('Open Project 3'),
-            ),
+            // Agregar otros botones para proyectos adicionales aquí después
           ],
         ),
       ),
