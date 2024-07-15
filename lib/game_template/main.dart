@@ -54,65 +54,14 @@ Future<void> main() async {
   });
 
   WidgetsFlutterBinding.ensureInitialized();
-
-  // TODO: To enable Firebase Crashlytics, uncomment the following line.
-  // See the 'Crashlytics' section of the main README.md file for details.
-
-  // if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
-  //   try {
-  //     await Firebase.initializeApp(
-  //       options: DefaultFirebaseOptions.currentPlatform,
-  //     );
-  //
-  //     FlutterError.onError = (errorDetails) {
-  //       FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  //     };
-  //
-  //     // Pass all uncaught asynchronous errors
-  //     // that aren't handled by the Flutter framework to Crashlytics.
-  //     PlatformDispatcher.instance.onError = (error, stack) {
-  //       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-  //       return true;
-  //     };
-  //   } catch (e) {
-  //     debugPrint("Firebase couldn't be initialized: $e");
-  //   }
-  // }
-
   _log.info('Going full screen');
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.edgeToEdge,
   );
-
-  // TODO: When ready, uncomment the following lines to enable integrations.
-  //       Read the README for more info on each integration.
-
   AdsController? adsController;
-  // if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
-  //   /// Prepare the google_mobile_ads plugin so that the first ad loads
-  //   /// faster. This can be done later or with a delay if startup
-  //   /// experience suffers.
-  //   adsController = AdsController(MobileAds.instance);
-  //   adsController.initialize();
-  // }
-
   GamesServicesController? gamesServicesController;
-  // if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
-  //   gamesServicesController = GamesServicesController()
-  //     // Attempt to log the player in.
-  //     ..initialize();
-  // }
 
   InAppPurchaseController? inAppPurchaseController;
-  // if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
-  //   inAppPurchaseController = InAppPurchaseController(InAppPurchase.instance)
-  //     // Subscribing to [InAppPurchase.instance.purchaseStream] as soon
-  //     // as possible in order not to miss any updates.
-  //     ..subscribe();
-  //   // Ask the store what the player has bought already.
-  //   inAppPurchaseController.restorePurchases();
-  // }
-
   runApp(
     MyApp(
       settingsPersistence: LocalStorageSettingsPersistence(),
@@ -165,12 +114,8 @@ class MyApp extends StatelessWidget {
                     path: 'won',
                     redirect: (context, state) {
                       if (state.extra == null) {
-                        // Trying to navigate to a win screen without any data.
-                        // Possibly by using the browser's back button.
                         return '/';
                       }
-
-                      // Otherwise, do not redirect.
                       return null;
                     },
                     pageBuilder: (context, state) {
@@ -241,9 +186,6 @@ class MyApp extends StatelessWidget {
           ),
           ProxyProvider2<SettingsController, ValueNotifier<AppLifecycleState>,
               AudioController>(
-            // Ensures that the AudioController is created on startup,
-            // and not "only when it's needed", as is default behavior.
-            // This way, music starts immediately.
             lazy: false,
             create: (context) => AudioController()..initialize(),
             update: (context, settings, lifecycleNotifier, audio) {

@@ -13,23 +13,6 @@ import 'package:provider/provider.dart';
 import 'ads_controller.dart';
 import 'preloaded_banner_ad.dart';
 
-/// Displays a banner ad that conforms to the widget's size in the layout,
-/// and reloads the ad when the user changes orientation.
-///
-/// Do not use this widget on platforms that AdMob currently doesn't support.
-/// For example:
-///
-/// ```dart
-/// if (kIsWeb) {
-///   return Text('No ads here! (Yet.)');
-/// } else {
-///   return MyBannerAd();
-/// }
-/// ```
-///
-/// This widget is adapted from pkg:google_mobile_ads's example code,
-/// namely the `anchored_adaptive_example.dart` file:
-/// https://github.com/googleads/googleads-mobile-flutter/blob/main/packages/google_mobile_ads/example/lib/anchored_adaptive_example.dart
 class BannerAdWidget extends StatefulWidget {
   const BannerAdWidget({super.key});
 
@@ -140,10 +123,6 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
     assert(Platform.isAndroid || Platform.isIOS,
         'AdMob currently does not support ${Platform.operatingSystem}');
     _bannerAd = BannerAd(
-      // This is a test ad unit ID from
-      // https://developers.google.com/admob/android/test-ads. When ready,
-      // you replace this with your own, production ad unit ID,
-      // created in https://apps.admob.com/.
       adUnitId: Theme.of(context).platform == TargetPlatform.android
           ? 'ca-app-pub-3940256099942544/6300978111'
           : 'ca-app-pub-3940256099942544/2934735716',
@@ -153,8 +132,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
         onAdLoaded: (ad) {
           _log.info(() => 'Ad loaded: ${ad.responseInfo}');
           setState(() {
-            // When the ad is loaded, get the ad size and use it to set
-            // the height of the ad container.
+
             _bannerAd = ad as BannerAd;
             _adLoadingState = _LoadingState.loaded;
           });
@@ -175,8 +153,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
   }
 
   Future<void> _showPreloadedAd(PreloadedBannerAd ad) async {
-    // It's possible that the banner is still loading (even though it started
-    // preloading at the start of the previous screen).
+
     _adLoadingState = _LoadingState.loading;
     try {
       _bannerAd = await ad.ready;
@@ -194,16 +171,13 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 }
 
 enum _LoadingState {
-  /// The state before we even start loading anything.
   initial,
 
-  /// The ad is being loaded at this point.
+
   loading,
 
-  /// The previous ad is being disposed of. After that is done, the next
-  /// ad will be loaded.
   disposing,
 
-  /// An ad has been loaded already.
+
   loaded,
 }
